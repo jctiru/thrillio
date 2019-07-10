@@ -29,12 +29,11 @@ public class BookmarkManager {
 		return movie;
 	}
 
-	public Book createBook(long id, String title, String profileUrl, int publicationYear, String publisher,
+	public Book createBook(long id, String title, int publicationYear, String publisher,
 			String[] authors, String genre, double amazonRating) {
 		Book book = new Book();
 		book.setId(id);
 		book.setTitle(title);
-		book.setProfileUrl(profileUrl);
 		book.setPublicationYear(publicationYear);
 		book.setPublisher(publisher);
 		book.setAuthors(authors);
