@@ -1,9 +1,8 @@
 package com.semanticsquare.thrillio.entities;
 
 import com.semanticsquare.thrillio.constants.KidFriendlyStatus;
-import com.semanticsquare.thrillio.partner.Shareable;
 
-public abstract class Bookmark implements Shareable {
+public abstract class Bookmark {
 	private long id;
 	private String title;
 	private String profileUrl;

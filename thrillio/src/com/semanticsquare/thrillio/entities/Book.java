@@ -5,8 +5,9 @@ import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 
 import com.semanticsquare.thrillio.constants.BookGenre;
+import com.semanticsquare.thrillio.partner.Shareable;
 
-public class Book extends Bookmark {
+public class Book extends Bookmark implements Shareable {
 	private int publicationYear;
 	private String publisher;
 	private String[] authors;
