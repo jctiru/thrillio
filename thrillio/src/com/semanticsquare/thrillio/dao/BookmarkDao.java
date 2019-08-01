@@ -20,11 +20,15 @@ public class BookmarkDao {
 	public List<WebLink> getAllWebLinks() {
 		List<WebLink> result = new ArrayList<>();
 		List<List<Bookmark>> bookmarks = DataStore.getBookmarks();
-		List<Bookmark> allWebLinks = bookmarks.get(0);
 
-		for (Bookmark bookmark : allWebLinks) {
-			result.add((WebLink) bookmark);
+		if (!bookmarks.isEmpty()) {
+			List<Bookmark> allWebLinks = bookmarks.get(0);
+
+			for (Bookmark bookmark : allWebLinks) {
+				result.add((WebLink) bookmark);
+			}
 		}
+
 		return result;
 	}
 

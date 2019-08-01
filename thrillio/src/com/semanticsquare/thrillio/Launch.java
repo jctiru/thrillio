@@ -19,9 +19,9 @@ public class Launch {
 		users = UserManager.getInstance().getUsers();
 		bookmarks = BookmarkManager.getInstance().getBookmarks();
 
-//		System.out.println("Printing data ...");
-//		printUserData();
-//		printBookmarkData();
+		System.out.println("Printing data ...");
+		printUserData();
+		printBookmarkData();
 	}
 
 	private static void printUserData() {
@@ -47,10 +47,10 @@ public class Launch {
 
 	public static void main(String[] args) {
 		loadData();
-		start();
+		// start();
 
 		// Background Jobs
-		runDownloaderJob();
+		// runDownloaderJob();
 	}
 
 	private static void runDownloaderJob() {
