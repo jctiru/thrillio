@@ -3,6 +3,7 @@ package com.semanticsquare.thrillio;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,18 +53,19 @@ public class DataStore {
 		// try-with-resources ==> conn & stmt will be closed
 		// Connection string: <protocol>:<sub-protocol>:<data-source details>
 		try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/thrillio?useSSL=false", "root",
-				"root"); Statement stmt = conn.createStatement()) {
-			loadUsers(stmt);
-			loadWebLinks(stmt);
-			loadMovies(stmt);
-			loadBooks(stmt);
+				"root")) {
+			loadUsers(conn);
+			loadWebLinks(conn);
+			loadMovies(conn);
+			loadBooks(conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static void loadUsers(Statement stmt) throws SQLException {
+	private static void loadUsers(Connection conn) throws SQLException {
 		String query = "SELECT * FROM User";
+		PreparedStatement stmt = conn.prepareStatement(query);
 		ResultSet rs = stmt.executeQuery(query);
 
 		while (rs.next()) {
@@ -83,8 +85,9 @@ public class DataStore {
 		}
 	}
 
-	private static void loadWebLinks(Statement stmt) throws SQLException {
+	private static void loadWebLinks(Connection conn) throws SQLException {
 		String query = "SELECT * FROM WebLink";
+		PreparedStatement stmt = conn.prepareStatement(query);
 		ResultSet rs = stmt.executeQuery(query);
 		List<Bookmark> bookmarkList = new ArrayList<>();
 
@@ -101,7 +104,7 @@ public class DataStore {
 		bookmarks.add(bookmarkList);
 	}
 
-	private static void loadMovies(Statement stmt) throws SQLException {
+	private static void loadMovies(Connection conn) throws SQLException {
 //		String query = "SELECT m.id, title, release_year, GROUP_CONCAT(a.name SEPARATOR ',') AS cast, GROUP_CONCAT(d.name SEPARATOR ',') AS directors, movie_genre_id, imdb_rating"
 //				+ " FROM Movie m, Actor a, Movie_Actor ma, Director d, Movie_Director md"
 //				+ " WHERE m.id = ma.movie_id AND ma.actor_id = a.id AND m.id = md.movie_id AND md.director_id = md.id"
@@ -111,6 +114,7 @@ public class DataStore {
 				+ " INNER JOIN (SELECT movie.id AS movie_id, actor.name AS actors FROM movie, actor, movie_actor WHERE movie.id = movie_actor.movie_id AND movie_actor.actor_id = actor.id) AS t1 ON movie.id = t1.movie_id"
 				+ " INNER JOIN (SELECT  movie.id AS movie_id, director.name AS directors FROM movie, director, movie_director WHERE movie.id = movie_director.movie_id AND movie_director.director_id = director.id) AS t2 ON movie.id = t2.movie_id"
 				+ " GROUP BY movie.id";
+		PreparedStatement stmt = conn.prepareStatement(query);
 		ResultSet rs = stmt.executeQuery(query);
 		List<Bookmark> bookmarkList = new ArrayList<>();
 
@@ -132,10 +136,11 @@ public class DataStore {
 		bookmarks.add(bookmarkList);
 	}
 
-	private static void loadBooks(Statement stmt) throws SQLException {
+	private static void loadBooks(Connection conn) throws SQLException {
 		String query = "SELECT b.id, title, publication_year, p.name, GROUP_CONCAT(a.name SEPARATOR ',') AS authors, book_genre_id, amazon_rating, created_date"
 				+ " FROM Book b, Publisher p, Author a, Book_Author ba"
 				+ " WHERE b.publisher_id = p.id and b.id = ba.book_id and ba.author_id = a.id" + " GROUP BY b.id";
+		PreparedStatement stmt = conn.prepareStatement(query);
 		ResultSet rs = stmt.executeQuery(query);
 		List<Bookmark> bookmarkList = new ArrayList<>();
 
@@ -149,15 +154,15 @@ public class DataStore {
 			BookGenre genre = BookGenre.values()[genre_id];
 			double amazonRating = rs.getDouble("amazon_rating");
 
-			Date createdDate = rs.getDate("created_date");
-			System.out.println("createdDate: " + createdDate);
-			Timestamp timeStamp = rs.getTimestamp(8); // (created_date)
-			System.out.println("timeStamp: " + timeStamp);
-			System.out.println("localDateTime: " + timeStamp.toLocalDateTime());
+//			Date createdDate = rs.getDate("created_date");
+//			System.out.println("createdDate: " + createdDate);
+//			Timestamp timeStamp = rs.getTimestamp(8); // (created_date)
+//			System.out.println("timeStamp: " + timeStamp);
+//			System.out.println("localDateTime: " + timeStamp.toLocalDateTime());
 
-			System.out.println("id: " + id + ", title: " + title + ", publication year: " + publicationYear
-					+ ", publisher: " + publisher + ", authors: " + String.join(", ", authors) + ", genre: " + genre
-					+ ", amazonRating: " + amazonRating);
+//			System.out.println("id: " + id + ", title: " + title + ", publication year: " + publicationYear
+//					+ ", publisher: " + publisher + ", authors: " + String.join(", ", authors) + ", genre: " + genre
+//					+ ", amazonRating: " + amazonRating);
 
 			Bookmark bookmark = BookmarkManager.getInstance().createBook(id, title, publicationYear, publisher, authors,
 					genre, amazonRating);
