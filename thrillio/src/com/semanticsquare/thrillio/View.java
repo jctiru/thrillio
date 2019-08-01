@@ -23,26 +23,26 @@ public class View {
 					System.out.println("New Item Bookmarked -- " + bookmark);
 				}
 
-//				if (user.getUserType().equals(UserType.EDITOR) || user.getUserType().equals(UserType.CHIEF_EDITOR)) {
-//					// Mark as kid-friendly
-//					if (bookmark.isKidFriendlyEligible()
-//							&& bookmark.getKidFriendlyStatus().equals(KidFriendlyStatus.UNKNOWN))
-//						;
-//					{
-//						KidFriendlyStatus kidFriendlyStatus = getKidFriendlyStatusDecision(bookmark);
-//						if (!kidFriendlyStatus.equals(KidFriendlyStatus.UNKNOWN)) {
-//							BookmarkController.getInstance().setKidFriendlyStatus(user, kidFriendlyStatus, bookmark);
-//						}
-//					}
-//					// Sharing!!
-//					if (bookmark.getKidFriendlyStatus().equals(KidFriendlyStatus.APPROVED)
-//							&& bookmark instanceof Shareable) {
-//						boolean isShared = getShareDecision();
-//						if (isShared) {
-//							BookmarkController.getInstance().share(user, bookmark);
-//						}
-//					}
-//				}
+				if (user.getUserType().equals(UserType.EDITOR) || user.getUserType().equals(UserType.CHIEF_EDITOR)) {
+					// Mark as kid-friendly
+					if (bookmark.isKidFriendlyEligible()
+							&& bookmark.getKidFriendlyStatus().equals(KidFriendlyStatus.UNKNOWN))
+						;
+					{
+						KidFriendlyStatus kidFriendlyStatus = getKidFriendlyStatusDecision(bookmark);
+						if (!kidFriendlyStatus.equals(KidFriendlyStatus.UNKNOWN)) {
+							BookmarkController.getInstance().setKidFriendlyStatus(user, kidFriendlyStatus, bookmark);
+						}
+					}
+					// Sharing!!
+					if (bookmark.getKidFriendlyStatus().equals(KidFriendlyStatus.APPROVED)
+							&& bookmark instanceof Shareable) {
+						boolean isShared = getShareDecision();
+						if (isShared) {
+							BookmarkController.getInstance().share(user, bookmark);
+						}
+					}
+				}
 
 			}
 		}

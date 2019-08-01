@@ -95,4 +95,51 @@ public class BookmarkDao {
 
 		return result;
 	}
+
+	public void updateKidFriendlyStatus(Bookmark bookmark) {
+		int kidFriendlyStatus = bookmark.getKidFriendlyStatus().ordinal();
+		long userId = bookmark.getKidFriendlyMarkedBy().getId();
+		long bookmarkId = bookmark.getId();
+
+		String tableToUpdate = "Book";
+		if (bookmark instanceof Movie) {
+			tableToUpdate = "Movie";
+		} else if (bookmark instanceof WebLink) {
+			tableToUpdate = "WebLink";
+		}
+
+		try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/thrillio?useSSL=false", "root",
+				"root")) {
+			String query = "UPDATE " + tableToUpdate + " SET kid_friendly_status = ? , kid_friendly_marked_by = ?"
+					+ " WHERE id = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, kidFriendlyStatus);
+			stmt.setLong(2, userId);
+			stmt.setLong(3, bookmarkId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sharedByInfo(Bookmark bookmark) {
+		long userId = bookmark.getSharedBy().getId();
+		long bookmarkId = bookmark.getId();
+
+		String tableToUpdate = "Book";
+		if (bookmark instanceof WebLink) {
+			tableToUpdate = "WebLink";
+		}
+
+		try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/thrillio?useSSL=false", "root",
+				"root")) {
+			String query = "UPDATE " + tableToUpdate + " SET shared_by = ?" + " WHERE id = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setLong(1, userId);
+			stmt.setLong(2, bookmarkId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
