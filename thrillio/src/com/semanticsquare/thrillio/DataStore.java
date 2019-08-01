@@ -39,17 +39,6 @@ public class DataStore {
 	}
 
 	public static void loadData() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// new com.mysql.cj.jdbc.Driver();
-			// or
-			// System.setProperty("jdbc.drivers", "com.mysql.cd.jdbc.Driver");
-			// or java.sql.DriverManager
-			// DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
 		// try-with-resources ==> conn & stmt will be closed
 		// Connection string: <protocol>:<sub-protocol>:<data-source details>
 		try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/thrillio?useSSL=false", "root",
